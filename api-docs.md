@@ -3,7 +3,7 @@
 ### 通用说明
 - **基础地址**: `http://localhost:8080`
 - **鉴权**: 通过 JWT 进行无状态认证：
-  - 登录/刷新接口（`/api/auth/login`、`/auth/login`、`/api/auth/refresh`、`/auth/refresh`、`/api/health`）无需携带 token；
+  - 登录/刷新接口（`/api/auth/login`、`/api/auth/refresh`、`/api/health`）无需携带 token；
   - 其它业务接口默认需要在 Header 中携带 `Authorization: Bearer <token>`。
 - **统一返回结构**: 大部分接口返回 `Result<T>` 或 `PageResult<T>`，字段如下：
   - `Result<T>`: `code`(int), `msg`(string), `data`(T)
@@ -42,12 +42,13 @@
   - 响应: `Result<Void>`
 
 - **GET** `/api/auth/user-info`
-  - 功能: 获取当前登录用户信息（与前端 `GET /auth/user-info` 等价，需 JWT）
+  - 功能: 获取当前登录用户信息（需 JWT）
   - Header: `Authorization: Bearer <token>`
   - 响应: `Result<SysUser>`（`password` 字段为 `null`，不返回明文密码）
 
-- **别名（与上完全等价）**：`POST /auth/login`、`POST /auth/refresh?token=...`、`GET /auth/user-info`  
-  若前端写成 `/auth/login` 而未带 `/api` 前缀，请用此路径或改为 `/api/auth/login`。
+- **GET** `/api/auth/routes`
+  - 功能: 下发前端路由目录（`constantRoutes` + `asyncRoutes`），需 JWT
+  - **asyncRoutes 按当前用户角色过滤**：`sys_user_role` → `sys_role.role_code` 映射为前端 `meta.roles`（`admin`→超级管理员看全部；`manager`→`PM`，`dev`→`DEV`，`tester`→`QA`）；仅当用户角色与路由 `meta.roles` 有交集时保留该段及子路由
 
 ---
 

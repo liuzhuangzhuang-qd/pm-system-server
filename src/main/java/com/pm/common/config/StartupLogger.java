@@ -22,7 +22,7 @@ public class StartupLogger implements CommandLineRunner {
         String port = environment.getProperty("server.port", "8080");
         String ctx = environment.getProperty("server.servlet.context-path", "");
         String base = "http://localhost:" + port + (ctx.isEmpty() ? "" : ctx);
-        log.info("应用已启动 | 健康检查: {}/api/health | 登录: {}/api/auth/login 或 {}/auth/login", base, base, base);
+        log.info("应用已启动 | 健康检查: {}/api/health | 登录: {}/api/auth/login", base, base);
     }
 }
 

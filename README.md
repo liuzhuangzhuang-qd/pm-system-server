@@ -145,7 +145,7 @@ docker compose down
 ## 五、初始化与登录
 
 1. 若已执行 **`src/main/resources/db/init.sql`**，可跳过手工建表；直接使用账号 **`admin` / `password`** 登录。
-2. 若未执行 init，需自行建表并插入用户：`password` 列须为 BCrypt 密文（可用 `new BCryptPasswordEncoder().encode("明文")` 生成），且表需含 `deleted` 字段（默认 0）。
+2. 若未执行 init，需自行建表并插入用户：当前版本 `password` 为**明文**（与本仓库 init.sql 保持一致），且表需含 `deleted` 字段（默认 0）。
 
 调用登录接口：
 

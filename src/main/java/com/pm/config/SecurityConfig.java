@@ -31,7 +31,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
                                 "/api/auth/login", "/api/auth/refresh",
-                                "/auth/login", "/auth/refresh",
                                 "/api/health"
                         ).permitAll()
                         .anyRequest().authenticated()
