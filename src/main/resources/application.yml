@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: pm-system
+  # 本地环境：复制 config/env.properties.example 为 config/env.properties 并填写
+  config:
+    import: optional:file:./config/env.properties
+
+  datasource:
+    url: ${PM_DB_URL:jdbc:mysql://localhost:3306/pm_system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai}
+    username: ${PM_DB_USERNAME:root}
+    password: ${PM_DB_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+server:
+  port: 8080
+
+# 日志：详细格式见 logback-spring.xml；文件默认 logs/pm-system.log，可通过环境变量 LOG_PATH 指定目录
+logging:
+  level:
+    root: INFO
+    com.pm: INFO
+    org.springframework.security: WARN
+
+pm:
+  security:
+    jwt-secret: "pm-system-secret-key-change-me-please"
+    jwt-expire-seconds: 7200
+

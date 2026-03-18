@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: docker.1ms.run/library/mysql:8.0
+    container_name: pm-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pm_system
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - pm-mysql-data:/var/lib/mysql
+
+  pm-system:
+    build: .
+    container_name: pm-system
+    restart: unless-stopped
+    environment:
+      PM_DB_URL: jdbc:mysql://mysql:3306/pm_system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      PM_DB_USERNAME: root
+      PM_DB_PASSWORD: root
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+
+volumes:
+  pm-mysql-data:
+
