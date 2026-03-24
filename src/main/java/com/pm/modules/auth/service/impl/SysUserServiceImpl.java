@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** 用户服务实现：按用户名查用户、查用户角色编码 */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
@@ -26,13 +27,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         this.sysRoleMapper = sysRoleMapper;
     }
 
+    /** 按登录名查询唯一用户 */
     @Override
     public SysUser getByUsername(String username) {
         return lambdaQuery().eq(SysUser::getUsername, username).one();
     }
 
+    /** 查询用户关联的角色 code 列表（小写） */
     @Override
-    public List<String> listDbRoleCodesByUsername(String username) {
+    public List<String> getDbRoleCodeListByUsername(String username) {
         SysUser user = getByUsername(username);
         if (user == null) {
             return List.of();

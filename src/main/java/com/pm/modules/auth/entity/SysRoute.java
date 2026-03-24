@@ -8,23 +8,21 @@ import lombok.Data;
 @TableName("sys_route")
 public class SysRoute extends BaseEntity {
 
+    /** 父级 ID，0 为顶级 */
     private Long parentId;
-    /**
-     * constant / async
-     */
+    /** 路由类型：constant / async */
     private String routeType;
+    /** 排序，升序 */
     private Integer sort;
-
+    /** 路由 path */
     private String path;
+    /** 路由 name */
     private String name;
-    /**
-     * 前端组件标识：如 Layout / views/dashboard/Dashboard
-     */
+    /** 前端组件标识（如 Layout、views/dashboard/index） */
     private String component;
+    /** 重定向地址 */
     private String redirect;
-    /**
-     * JSON 字符串，原样存 meta
-     */
+    /** meta 的 JSON 字符串 */
     private String metaJson;
 }
 

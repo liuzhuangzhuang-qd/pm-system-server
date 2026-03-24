@@ -8,11 +8,11 @@ import lombok.Data;
 @TableName("sys_role")
 public class SysRole extends BaseEntity {
 
+    /** 角色名称 */
     private String roleName;
+    /** 角色编码（如 admin/manager/dev/tester） */
     private String roleCode;
-    /**
-     * JSON permissions string
-     */
+    /** 权限 JSON 字符串 */
     private String permissions;
 }
 

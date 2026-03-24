@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/** 认证服务实现：明文密码校验、JWT 签发与解析、当前用户查询 */
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -31,8 +32,9 @@ public class AuthServiceImpl implements AuthService {
         this.jwtUtil = jwtUtil;
     }
 
+    /** 校验用户名密码，通过则生成并返回 JWT */
     @Override
-    public LoginResult login(LoginRequest request) {
+    public LoginResult createLoginToken(LoginRequest request) {
         String username = request.getUsername();
         SysUser user = sysUserService.getByUsername(username);
         if (user == null || user.getStatus() != 1) {
@@ -50,17 +52,18 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResult(token);
     }
 
+    /** 基于旧 token 的 subject 重新签发新 token */
     @Override
-    public LoginResult refresh(String token) {
-        // 简化：直接基于旧 token 中的 subject 重新生成新 token
+    public LoginResult updateLoginToken(String token) {
         String username = jwtUtil.parseToken(token).getSubject();
         log.debug("刷新 token username={}", username);
         Map<String, Object> claims = new HashMap<>();
         return new LoginResult(jwtUtil.generateToken(username, claims));
     }
 
+    /** 从 SecurityContext 取当前用户并返回资料（密码置空） */
     @Override
-    public SysUser getCurrentUserProfile() {
+    public SysUser getCurrentUserInfo() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
             throw new BizException(ResultCode.UNAUTHORIZED);

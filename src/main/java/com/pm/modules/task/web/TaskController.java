@@ -7,6 +7,7 @@ import com.pm.modules.task.entity.Task;
 import com.pm.modules.task.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
+/** 任务管理接口：CRUD 与分页列表（可按项目过滤） */
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -17,29 +18,34 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/{id}")
-    public Result<Task> get(@PathVariable Long id) {
+    /** 按 ID 获取任务 */
+    @GetMapping("/getTaskById/{id}")
+    public Result<Task> getTaskById(@PathVariable Long id) {
         return Result.success(taskService.getById(id));
     }
 
-    @PostMapping
-    public Result<Boolean> create(@RequestBody Task task) {
+    /** 新增任务 */
+    @PostMapping("/createTask")
+    public Result<Boolean> createTask(@RequestBody Task task) {
         return Result.success(taskService.save(task));
     }
 
-    @PutMapping("/{id}")
-    public Result<Boolean> update(@PathVariable Long id, @RequestBody Task task) {
+    /** 按 ID 更新任务 */
+    @PutMapping("/updateTask/{id}")
+    public Result<Boolean> updateTask(@PathVariable Long id, @RequestBody Task task) {
         task.setId(id);
         return Result.success(taskService.updateById(task));
     }
 
-    @DeleteMapping("/{id}")
-    public Result<Boolean> delete(@PathVariable Long id) {
+    /** 按 ID 删除任务（逻辑删除） */
+    @DeleteMapping("/deleteTask/{id}")
+    public Result<Boolean> deleteTask(@PathVariable Long id) {
         return Result.success(taskService.removeById(id));
     }
 
-    @GetMapping
-    public Result<PageResult<Task>> list(@RequestParam(required = false) Long projectId,
+    /** 分页查询任务列表，可选按 projectId 过滤 */
+    @GetMapping("/getTaskList")
+    public Result<PageResult<Task>> getTaskList(@RequestParam(required = false) Long projectId,
                                          @RequestParam(defaultValue = "1") long pageNo,
                                          @RequestParam(defaultValue = "10") long pageSize) {
         Page<Task> page = taskService.lambdaQuery()

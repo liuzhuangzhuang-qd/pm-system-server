@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/** 前端路由服务实现：从库表组树、按角色过滤 asyncRoutes */
 @Service
 public class SysRouteServiceImpl extends ServiceImpl<SysRouteMapper, SysRoute> implements SysRouteService {
 
@@ -32,6 +33,7 @@ public class SysRouteServiceImpl extends ServiceImpl<SysRouteMapper, SysRoute> i
         this.sysUserService = sysUserService;
     }
 
+    /** 查询全部路由并组树，按当前用户角色过滤 async 路由 */
     @Override
     public Map<String, Object> getFrontRoutes() {
         List<SysRoute> routes = lambdaQuery()
@@ -49,7 +51,7 @@ public class SysRouteServiceImpl extends ServiceImpl<SysRouteMapper, SysRoute> i
         boolean superAdmin = false;
         Set<String> frontRoles = new HashSet<>();
         if (username != null && !"anonymousUser".equals(username)) {
-            List<String> dbCodes = sysUserService.listDbRoleCodesByUsername(username);
+            List<String> dbCodes = sysUserService.getDbRoleCodeListByUsername(username);
             for (String code : dbCodes) {
                 if ("admin".equalsIgnoreCase(code)) {
                     superAdmin = true;
@@ -63,6 +65,27 @@ public class SysRouteServiceImpl extends ServiceImpl<SysRouteMapper, SysRoute> i
         }
 
         List<Map<String, Object>> async = superAdmin ? asyncFull : filterAsyncByRoles(asyncFull, frontRoles);
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("constantRoutes", constant);
+        result.put("asyncRoutes", async);
+        return result;
+    }
+
+    /** 查询全部路由并组树（不做角色过滤），用于前端路由 CRUD 管理展示 */
+    @Override
+    public Map<String, Object> getRouteTree(String routeType, Long parentId) {
+        List<SysRoute> routes = lambdaQuery()
+                .eq(SysRoute::getDeleted, 0)
+                .eq(routeType != null && !routeType.isBlank(), SysRoute::getRouteType, routeType)
+                .eq(parentId != null, SysRoute::getParentId, parentId)
+                .orderByAsc(SysRoute::getRouteType)
+                .orderByAsc(SysRoute::getSort)
+                .orderByAsc(SysRoute::getId)
+                .list();
+
+        List<Map<String, Object>> constant = buildTree(toFrontNodes(filterByType(routes, "constant")));
+        List<Map<String, Object>> async = buildTree(toFrontNodes(filterByType(routes, "async")));
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("constantRoutes", constant);

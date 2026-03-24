@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Map;
 
+/** JWT 签发与解析（HS256）；密钥支持 Base64URL/Base64 或明文（SHA-256 派生） */
 @Component
 public class JwtUtil {
 
@@ -57,6 +58,7 @@ public class JwtUtil {
         }
     }
 
+    /** 生成 JWT，subject 一般为用户名，claims 可含 uid 等 */
     public String generateToken(String subject, Map<String, Object> claims) {
         Date now = new Date();
         Date expire = new Date(now.getTime() + expireSeconds * 1000);
@@ -69,6 +71,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    /** 解析并校验 JWT，失败抛异常 */
     public Claims parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())

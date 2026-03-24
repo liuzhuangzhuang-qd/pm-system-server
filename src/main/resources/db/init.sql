@@ -435,6 +435,7 @@ INSERT INTO `sys_route` (`id`,`parent_id`,`route_type`,`sort`,`path`,`name`,`com
 (2601,2005,'async',2,'dict','DictList','views/system/dictList/index',NULL,'{\"title\":\"数据字典\"}',NOW(),NOW(),0),
 (2602,2005,'async',3,'config','ConfigList','views/system/configList/index',NULL,'{\"title\":\"系统配置\"}',NOW(),NOW(),0),
 (2603,2005,'async',4,'org','OrgList','views/system/orgList/index',NULL,'{\"title\":\"组织机构\"}',NOW(),NOW(),0),
+(2604,2005,'async',5,'router','RouterList','views/system/routerList/index',NULL,'{\"title\":\"菜单管理\"}',NOW(),NOW(),0),
 
 -- auth children
 (2700,2006,'async',1,'user','UserList','views/auth/userList/index',NULL,'{\"title\":\"用户管理\"}',NOW(),NOW(),0),

@@ -8,14 +8,11 @@ import lombok.Data;
 @TableName("project_config")
 public class ProjectConfig extends BaseEntity {
 
+    /** 项目 ID */
     private Long projectId;
-    /**
-     * workflow_config JSON
-     */
+    /** 工作流配置 JSON */
     private String workflowConfig;
-    /**
-     * custom_fields JSON
-     */
+    /** 自定义字段 JSON */
     private String customFields;
 }
 

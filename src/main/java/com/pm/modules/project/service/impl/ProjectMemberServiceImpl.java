@@ -6,6 +6,7 @@ import com.pm.modules.project.mapper.ProjectMemberMapper;
 import com.pm.modules.project.service.ProjectMemberService;
 import org.springframework.stereotype.Service;
 
+/** 项目成员服务实现，基于 MyBatis-Plus 默认 CRUD */
 @Service
 public class ProjectMemberServiceImpl extends ServiceImpl<ProjectMemberMapper, ProjectMember> implements ProjectMemberService {
 }

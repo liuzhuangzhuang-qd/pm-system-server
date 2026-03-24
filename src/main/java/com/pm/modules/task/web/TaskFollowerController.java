@@ -7,6 +7,7 @@ import com.pm.modules.task.entity.TaskFollower;
 import com.pm.modules.task.service.TaskFollowerService;
 import org.springframework.web.bind.annotation.*;
 
+/** 任务关注人接口：新增、删除、按任务分页查询 */
 @RestController
 @RequestMapping("/api/task-followers")
 public class TaskFollowerController {
@@ -17,18 +18,21 @@ public class TaskFollowerController {
         this.taskFollowerService = taskFollowerService;
     }
 
-    @PostMapping
-    public Result<Boolean> create(@RequestBody TaskFollower follower) {
+    /** 新增任务关注人 */
+    @PostMapping("/createTaskFollower")
+    public Result<Boolean> createTaskFollower(@RequestBody TaskFollower follower) {
         return Result.success(taskFollowerService.save(follower));
     }
 
-    @DeleteMapping("/{id}")
-    public Result<Boolean> delete(@PathVariable Long id) {
+    /** 按 ID 取消关注（逻辑删除） */
+    @DeleteMapping("/deleteTaskFollower/{id}")
+    public Result<Boolean> deleteTaskFollower(@PathVariable Long id) {
         return Result.success(taskFollowerService.removeById(id));
     }
 
-    @GetMapping
-    public Result<PageResult<TaskFollower>> list(@RequestParam Long taskId,
+    /** 按任务 ID 分页查询关注人列表 */
+    @GetMapping("/getTaskFollowerList")
+    public Result<PageResult<TaskFollower>> getTaskFollowerList(@RequestParam Long taskId,
                                                  @RequestParam(defaultValue = "1") long pageNo,
                                                  @RequestParam(defaultValue = "10") long pageSize) {
         Page<TaskFollower> page = taskFollowerService.lambdaQuery()

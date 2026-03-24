@@ -8,6 +8,7 @@ import com.pm.modules.auth.web.dto.LoginResult;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+/** 认证相关接口：登录、刷新、登出、当前用户信息 */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -18,25 +19,28 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/login")
-    public Result<LoginResult> login(@Valid @RequestBody LoginRequest request) {
-        return Result.success(authService.login(request));
+    /** 登录，校验账号密码并返回 JWT */
+    @PostMapping("/createLoginToken")
+    public Result<LoginResult> createLoginToken(@Valid @RequestBody LoginRequest request) {
+        return Result.success(authService.createLoginToken(request));
     }
 
-    @PostMapping("/refresh")
-    public Result<LoginResult> refresh(@RequestParam String token) {
-        return Result.success(authService.refresh(token));
+    /** 刷新 token，根据旧 token 签发新 token */
+    @PostMapping("/updateLoginToken")
+    public Result<LoginResult> updateLoginToken(@RequestParam String token) {
+        return Result.success(authService.updateLoginToken(token));
     }
 
-    @PostMapping("/logout")
-    public Result<Void> logout() {
-        // 前端删除 token 即可，后端此处预留扩展（如黑名单）
+    /** 登出（前端删 token；后端预留扩展如黑名单） */
+    @PostMapping("/deleteLoginToken")
+    public Result<Void> deleteLoginToken() {
         return Result.success();
     }
 
-    @GetMapping("/user-info")
-    public Result<SysUser> userInfo() {
-        return Result.success(authService.getCurrentUserProfile());
+    /** 获取当前登录用户信息（需 JWT，password 不返回） */
+    @GetMapping("/getUserInfo")
+    public Result<SysUser> getUserInfo() {
+        return Result.success(authService.getCurrentUserInfo());
     }
 }
 

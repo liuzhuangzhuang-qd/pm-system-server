@@ -8,7 +8,9 @@ import lombok.Data;
 @TableName("sys_user_role")
 public class SysUserRole extends BaseEntity {
 
+    /** 用户 ID */
     private Long userId;
+    /** 角色 ID */
     private Long roleId;
 }
 

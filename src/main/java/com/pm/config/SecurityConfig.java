@@ -12,6 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/** Spring Security 配置：JWT 校验、放行登录/健康检查、CORS、无状态会话 */
 @Configuration
 public class SecurityConfig {
 
@@ -21,6 +22,7 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    /** 安全过滤链：CORS、禁用 CSRF、无状态、放行登录/刷新/健康检查，其余需 JWT 认证 */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -30,8 +32,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
-                                "/api/auth/login", "/api/auth/refresh",
-                                "/api/health"
+                                "/api/auth/createLoginToken", "/api/auth/updateLoginToken",
+                                "/api/getHealth"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -39,6 +41,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /** CORS 配置：允许任意源、任意方法/头、携带凭证 */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

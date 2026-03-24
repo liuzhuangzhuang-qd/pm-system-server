@@ -7,6 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginResult {
 
+    /** JWT 令牌 */
     private String token;
 }
 

@@ -7,6 +7,7 @@ import com.pm.modules.task.entity.TaskHistory;
 import com.pm.modules.task.service.TaskHistoryService;
 import org.springframework.web.bind.annotation.*;
 
+/** 任务变更历史接口：按任务分页查询 */
 @RestController
 @RequestMapping("/api/task-history")
 public class TaskHistoryController {
@@ -17,8 +18,9 @@ public class TaskHistoryController {
         this.taskHistoryService = taskHistoryService;
     }
 
-    @GetMapping
-    public Result<PageResult<TaskHistory>> list(@RequestParam Long taskId,
+    /** 按任务 ID 分页查询变更历史（按创建时间倒序） */
+    @GetMapping("/getTaskHistoryList")
+    public Result<PageResult<TaskHistory>> getTaskHistoryList(@RequestParam Long taskId,
                                                 @RequestParam(defaultValue = "1") long pageNo,
                                                 @RequestParam(defaultValue = "10") long pageSize) {
         Page<TaskHistory> page = taskHistoryService.lambdaQuery()

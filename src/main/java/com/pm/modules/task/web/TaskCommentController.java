@@ -7,6 +7,7 @@ import com.pm.modules.task.entity.TaskComment;
 import com.pm.modules.task.service.TaskCommentService;
 import org.springframework.web.bind.annotation.*;
 
+/** 任务评论接口：新增、删除、按任务分页查询 */
 @RestController
 @RequestMapping("/api/task-comments")
 public class TaskCommentController {
@@ -17,18 +18,21 @@ public class TaskCommentController {
         this.taskCommentService = taskCommentService;
     }
 
-    @PostMapping
-    public Result<Boolean> create(@RequestBody TaskComment comment) {
+    /** 新增任务评论 */
+    @PostMapping("/createTaskComment")
+    public Result<Boolean> createTaskComment(@RequestBody TaskComment comment) {
         return Result.success(taskCommentService.save(comment));
     }
 
-    @DeleteMapping("/{id}")
-    public Result<Boolean> delete(@PathVariable Long id) {
+    /** 按 ID 删除评论（逻辑删除） */
+    @DeleteMapping("/deleteTaskComment/{id}")
+    public Result<Boolean> deleteTaskComment(@PathVariable Long id) {
         return Result.success(taskCommentService.removeById(id));
     }
 
-    @GetMapping
-    public Result<PageResult<TaskComment>> list(@RequestParam Long taskId,
+    /** 按任务 ID 分页查询评论列表 */
+    @GetMapping("/getTaskCommentList")
+    public Result<PageResult<TaskComment>> getTaskCommentList(@RequestParam Long taskId,
                                                 @RequestParam(defaultValue = "1") long pageNo,
                                                 @RequestParam(defaultValue = "10") long pageSize) {
         Page<TaskComment> page = taskCommentService.lambdaQuery()

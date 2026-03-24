@@ -2,6 +2,7 @@ package com.pm.common.result;
 
 import lombok.Getter;
 
+/** 统一响应码与文案 */
 @Getter
 public enum ResultCode {
 

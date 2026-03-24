@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/** MyBatis-Plus 配置：分页插件 */
 @Configuration
 public class MybatisPlusConfig {
 
+    /** 注册分页拦截器 */
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
